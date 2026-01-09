@@ -1,6 +1,6 @@
-import chalk from 'chalk';
-import { diffLines } from 'diff';
-import { DiffContext, DiffResult, Semver, SemverAuditEntries } from './models';
+import chalk from "chalk";
+import { diffLines } from "diff";
+import { DiffContext, DiffResult, Semver, SemverAuditEntries } from "./models";
 
 export function generateOutput(
   diff: DiffResult,
@@ -8,11 +8,11 @@ export function generateOutput(
   format: string,
 ): string | { [key: string]: any } {
   switch (format) {
-    case 'text':
+    case "text":
       return outputAsText(diff, diffCtx);
-    case 'markdown':
+    case "markdown":
       return outputAsMarkdown(diff, diffCtx);
-    case 'json':
+    case "json":
       return outputAsJson(diff, diffCtx);
     default:
       throw Error(`Unsupported format: ${format}`);
@@ -26,13 +26,13 @@ export function outputAsText(
 ): string {
   let tree = buildOutputTree(diff, base, target);
 
-  let output = '\n';
+  let output = "\n";
 
   function appendToOutput(str: string, color?: (str: string) => string) {
     if (color != null && colorize) {
-      output += color(str.trimEnd()) + '\n';
+      output += color(str.trimEnd()) + "\n";
     } else {
-      output += str.trimEnd() + '\n';
+      output += str.trimEnd() + "\n";
     }
   }
 
@@ -51,7 +51,7 @@ export function outputAsText(
 
       // a null parent signature, implies that the parent of this entry
       // is a "file" or "package". Emit the header for this element in that situation
-      let parent = target[parentKey ?? ''] ?? base[parentKey ?? ''];
+      let parent = target[parentKey ?? ""] ?? base[parentKey ?? ""];
       if (parent != null && parent.grammar.signature == null) {
         appendToOutput(
           `@@ ${parent.key} <-- ${entry.meta.uri}#L${entry.meta.line} @@`,
@@ -67,23 +67,23 @@ export function outputAsText(
 
       let indent = depth * 2;
       let signatureDiff = diffLines(
-        base[key]?.grammar.signature ?? '',
-        target[key]?.grammar.signature ?? '',
+        base[key]?.grammar.signature ?? "",
+        target[key]?.grammar.signature ?? "",
       );
       for (let lineDiff of signatureDiff) {
         if (lineDiff.added) {
-          appendToOutput(setIndent(lineDiff.value, indent, '+  '), chalk.green);
+          appendToOutput(setIndent(lineDiff.value, indent, "+  "), chalk.green);
         } else if (lineDiff.removed) {
-          appendToOutput(setIndent(lineDiff.value, indent, '-  '), chalk.red);
+          appendToOutput(setIndent(lineDiff.value, indent, "-  "), chalk.red);
         } else {
           appendToOutput(setIndent(lineDiff.value, indent));
         }
       }
 
       diff[key]?.forEach((sem) =>
-        appendToOutput(setIndent(sem.reason!, indent, '// '), chalk.cyan),
+        appendToOutput(setIndent(sem.reason!, indent, "// "), chalk.cyan),
       );
-      appendToOutput('');
+      appendToOutput("");
     }
   };
 
@@ -107,16 +107,16 @@ export function outputAsMarkdown(diff: DiffResult, diffCtx: DiffContext) {
   if (chunks.length > 0) {
     markdown = [
       ...markdown,
-      '<details>',
-      '  <summary>Expand</summary>',
-      '', // empty line needed for markdown to correctly render this collapsed region
+      "<details>",
+      "  <summary>Expand</summary>",
+      "", // empty line needed for markdown to correctly render this collapsed region
       ...chunks.map((chunk) => `\`\`\`diff\n${chunk}\n\`\`\``),
-      '</details>',
-      '', // empty line needed for markdown to correctly render this collapsed region
+      "</details>",
+      "", // empty line needed for markdown to correctly render this collapsed region
     ];
   }
 
-  return markdown.join('\n');
+  return markdown.join("\n");
 }
 
 export function outputAsJson(
@@ -135,7 +135,7 @@ export function outputAsJson(
     let level = calculateSemverLevel(semver);
 
     // do not display patch only changes
-    if (level == 'patch') continue;
+    if (level == "patch") continue;
 
     let entry = target[key] ?? base[key]!;
 
@@ -170,7 +170,7 @@ function buildOutputTree(
   target: SemverAuditEntries,
 ): OutputTreeNode {
   let keys = Object.keys(diff).filter(
-    (key) => calculateSemverLevel(diff[key]!) != 'patch',
+    (key) => calculateSemverLevel(diff[key]!) != "patch",
   );
 
   keys.sort();
@@ -184,7 +184,7 @@ function buildOutputTree(
 
     let full_key = [entry.key];
     let iter = entry;
-    while (iter.parent_key != null && iter.parent_key != '') {
+    while (iter.parent_key != null && iter.parent_key != "") {
       iter = target[iter.parent_key] ?? base[iter.parent_key]!;
       full_key.unshift(iter.key);
     }
@@ -206,12 +206,12 @@ export function generateRecommendation(diffs: DiffResult[], format: string) {
 
   // if the format is "markdown", use shields.io to create a badge style
   // display for the semver rec
-  if (format == 'markdown') {
-    let color = 'green';
-    if (level == 'major') {
-      color = 'red';
-    } else if (level == 'minor') {
-      color = 'yellow';
+  if (format == "markdown") {
+    let color = "green";
+    if (level == "major") {
+      color = "red";
+    } else if (level == "minor") {
+      color = "yellow";
     }
     return `![${level}](https://img.shields.io/badge/${level}-${color})`;
   }
@@ -224,20 +224,20 @@ export function generateRecommendation(diffs: DiffResult[], format: string) {
 function calculateSemverLevel(vers: Semver[]) {
   let levels = new Set(vers.map(({ level }) => level));
 
-  if (levels.has('major')) {
-    return 'major';
-  } else if (levels.has('minor')) {
-    return 'minor';
+  if (levels.has("major")) {
+    return "major";
+  } else if (levels.has("minor")) {
+    return "minor";
   } else {
-    return 'patch';
+    return "patch";
   }
 }
 
-export function setIndent(str: string, indent: number, prefix: string = '') {
+export function setIndent(str: string, indent: number, prefix: string = "") {
   return stripIndent(str)
-    .split('\n')
-    .map((line) => `${prefix}${' '.repeat(indent)}${line}`)
-    .join('\n');
+    .split("\n")
+    .map((line) => `${prefix}${" ".repeat(indent)}${line}`)
+    .join("\n");
 }
 
 function stripIndent(string: string) {
@@ -247,6 +247,6 @@ function stripIndent(string: string) {
     return string;
   }
 
-  const regex = new RegExp(`^[ \\t]{${indent}}`, 'gm');
-  return string.replace(regex, '');
+  const regex = new RegExp(`^[ \\t]{${indent}}`, "gm");
+  return string.replace(regex, "");
 }

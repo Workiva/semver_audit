@@ -1,4 +1,4 @@
-import { Grammar } from './plugin_interface';
+import { Grammar } from "./plugin_interface";
 
 /** Represents the information necessary to generate a diff */
 export type DiffContext = {
@@ -78,12 +78,12 @@ export class Semver {
   }
 
   static major(reason?: string) {
-    return new Semver('major', reason);
+    return new Semver("major", reason);
   }
   static minor(reason?: string) {
-    return new Semver('minor', reason);
+    return new Semver("minor", reason);
   }
   static patch(reason?: string) {
-    return new Semver('patch', reason);
+    return new Semver("patch", reason);
   }
 }

@@ -1,10 +1,10 @@
-import ts from 'typescript';
-import { Entry, parametersFor } from './base_entry';
+import ts from "typescript";
+import { Entry, parametersFor } from "./base_entry";
 
 export class ConstructorEntry extends Entry<ts.ConstructorDeclaration> {
-  type = 'constructor';
+  type = "constructor";
 
-  name = () => 'constructor';
+  name = () => "constructor";
 
   grammar() {
     return {

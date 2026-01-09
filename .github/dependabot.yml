@@ -2,14 +2,14 @@ version: 2
 
 updates:
   - package-ecosystem: github-actions
-    directories: 
+    directories:
       - /
       - .github/actions/setup-bun
     schedule:
       interval: weekly
     groups:
       gha:
-        patterns: ['*']
+        patterns: ["*"]
 
   - package-ecosystem: bun
     directories:
@@ -19,7 +19,7 @@ updates:
       interval: weekly
     groups:
       ts:
-        patterns: ['*']
+        patterns: ["*"]
 
   - package-ecosystem: pub
     directories:
@@ -28,7 +28,7 @@ updates:
       interval: weekly
     groups:
       dart:
-        patterns: ['*']
+        patterns: ["*"]
 
   - package-ecosystem: gomod
     directories:
@@ -37,4 +37,4 @@ updates:
       interval: weekly
     groups:
       go:
-        patterns: ['*']
+        patterns: ["*"]

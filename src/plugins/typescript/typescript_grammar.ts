@@ -1,5 +1,5 @@
-import { Grammar } from '../../core/plugin_interface';
-import { ParametersGrammar } from '../../core/shared_grammar';
+import { Grammar } from "../../core/plugin_interface";
+import { ParametersGrammar } from "../../core/shared_grammar";
 
 export interface TypescriptGrammar extends Grammar {}
 
@@ -21,30 +21,36 @@ export interface EnumGrammar extends TypescriptGrammar {
 }
 
 export interface TypeAliasGrammar extends TypescriptGrammar {
-  type: TypeGrammar
+  type: TypeGrammar;
 }
 
 export interface InterfaceGrammar extends TypescriptGrammar {
-  extends: string[],
-  members: Record<string, {
-    required: boolean,
-    readonly: boolean,
-    type: string,
-  }>
+  extends: string[];
+  members: Record<
+    string,
+    {
+      required: boolean;
+      readonly: boolean;
+      type: string;
+    }
+  >;
 }
 
 export type TypeGrammar = string | ObjectTypeGrammar | FunctionTypeGrammar;
 
-export interface ObjectTypeGrammar  {
-  kind: 'object',
-  members: Record<string, {
-    required: boolean,
-    readonly: boolean,
-    type: string,
-  }>
-};
+export interface ObjectTypeGrammar {
+  kind: "object";
+  members: Record<
+    string,
+    {
+      required: boolean;
+      readonly: boolean;
+      type: string;
+    }
+  >;
+}
 
-export type FunctionTypeGrammar = { kind: 'function' } & FunctionGrammar;
+export type FunctionTypeGrammar = { kind: "function" } & FunctionGrammar;
 
 export interface ClassGrammar extends TypescriptGrammar {
   is_abstract: boolean;

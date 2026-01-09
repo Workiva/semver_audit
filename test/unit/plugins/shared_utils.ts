@@ -1,4 +1,4 @@
-import { ApiNode, Grammar } from '../../../src/core/plugin_interface';
+import { ApiNode, Grammar } from "../../../src/core/plugin_interface";
 
 export type AncestorGrammar<T> =
   | Partial<T>
@@ -12,7 +12,7 @@ export function buildAncestor<T extends Grammar>(
   let base: Partial<T> | undefined;
   if (grammar == null) {
     base = generator({});
-  } else if (grammar.hasOwnProperty('base')) {
+  } else if (grammar.hasOwnProperty("base")) {
     base = grammar.base;
   } else {
     base = grammar as Partial<T>;
@@ -21,7 +21,7 @@ export function buildAncestor<T extends Grammar>(
   let target: Partial<T>;
   if (grammar == null) {
     target = generator({});
-  } else if (grammar.hasOwnProperty('target')) {
+  } else if (grammar.hasOwnProperty("target")) {
     target = grammar.target!;
   } else {
     target = grammar as Partial<T>;

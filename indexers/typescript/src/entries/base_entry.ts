@@ -1,5 +1,5 @@
-import ts from 'typescript';
-import path from 'node:path';
+import ts from "typescript";
+import path from "node:path";
 
 export abstract class Entry<T extends ts.NamedDeclaration> {
   get key() {
@@ -24,7 +24,7 @@ export abstract class Entry<T extends ts.NamedDeclaration> {
     this.typeChecker = typeChecker;
   }
 
-  name = () => this.declaration.name?.getText() ?? 'undefined';
+  name = () => this.declaration.name?.getText() ?? "undefined";
   abstract grammar(): { [key: string]: any };
   abstract signatureDeclaration(): ts.Declaration;
 
@@ -48,7 +48,7 @@ export abstract class Entry<T extends ts.NamedDeclaration> {
 
   private buildSignature(): string {
     let sigDec = this.signatureDeclaration();
-    if (sigDec == null) return '';
+    if (sigDec == null) return "";
 
     return ts
       .createPrinter({
@@ -59,9 +59,9 @@ export abstract class Entry<T extends ts.NamedDeclaration> {
         sigDec,
         this.declaration.getSourceFile(),
       )
-      .replace('export ', '')
-      .replace(/\n/g, ' ')
-      .replace(/\s+/g, ' ');
+      .replace("export ", "")
+      .replace(/\n/g, " ")
+      .replace(/\s+/g, " ");
   }
 }
 
@@ -99,7 +99,7 @@ export function returnTypeFor(
   typeChecker: ts.TypeChecker,
 ) {
   const signature = typeChecker.getSignatureFromDeclaration(declaration);
-  if (!signature) return 'any';
+  if (!signature) return "any";
 
   const type = typeChecker.getReturnTypeOfSignature(signature);
   return typeChecker.typeToString(type);

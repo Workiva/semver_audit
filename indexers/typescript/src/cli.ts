@@ -1,30 +1,30 @@
 #!/usr/bin/env node
 
-import { parseArgs } from 'node:util';
-import path from 'path';
-import { generateSemverAuditReport } from './generate';
-import ts from 'typescript';
-import { readFile } from 'fs/promises';
-import semverAuditTypescriptVersion from './version';
-import { existsSync } from 'node:fs';
+import { parseArgs } from "node:util";
+import path from "path";
+import { generateSemverAuditReport } from "./generate";
+import ts from "typescript";
+import { readFile } from "fs/promises";
+import semverAuditTypescriptVersion from "./version";
+import { existsSync } from "node:fs";
 
 const { values, positionals } = parseArgs({
   args: process.argv,
   options: {
     help: {
-      type: 'boolean',
-      alias: 'h',
+      type: "boolean",
+      alias: "h",
     },
     version: {
-      type: 'boolean',
-      alias: 'v',
+      type: "boolean",
+      alias: "v",
     },
     entrypoint: {
-      type: 'string',
+      type: "string",
       multiple: true,
     },
     minify: {
-      type: 'boolean',
+      type: "boolean",
       default: false,
     },
   },
@@ -47,14 +47,16 @@ let entrypoints: string[] = values.entrypoint ?? [];
 
 assertFileExists(`${packageRoot}/package.json`);
 
-let packageJsonStr = (await readFile(`${packageRoot}/package.json`)).toString()
+let packageJsonStr = (await readFile(`${packageRoot}/package.json`)).toString();
 let packageJson = JSON.parse(packageJsonStr.toString());
 let packageName = packageJson.name;
 
 // if no entrypoints were explicitly passed into the cli. Check the 'package.json/main' field
 if (entrypoints.length === 0) {
   if (!packageJson.main) {
-    console.warn(`ERROR: No entrypoints were provided, and '${packageRoot}/package.json' has no "main" key declared`)
+    console.warn(
+      `ERROR: No entrypoints were provided, and '${packageRoot}/package.json' has no "main" key declared`,
+    );
     process.exit(1);
   }
 
@@ -62,11 +64,13 @@ if (entrypoints.length === 0) {
 }
 
 // ensure that each of the provided entrypoints actually exists
-entrypoints.forEach((entrypoint, i) => assertFileExists({
-  entrypoint,
-  // only exit for the last item in the entrypoints array
-  shouldExit: i == (entrypoints.length - 1)
-}))
+entrypoints.forEach((entrypoint, i) =>
+  assertFileExists({
+    entrypoint,
+    // only exit for the last item in the entrypoints array
+    shouldExit: i == entrypoints.length - 1,
+  }),
+);
 
 let tsconfig = ts.readConfigFile(
   `${packageRoot}/tsconfig.json`,
@@ -88,7 +92,7 @@ let report = generateSemverAuditReport({
 let output = {
   version: 1,
   root_key: packageName,
-  language: 'typescript',
+  language: "typescript",
   indexer_version: semverAuditTypescriptVersion,
   exports: report,
 };
@@ -97,17 +101,15 @@ console.log(JSON.stringify(output, null, values.minify ? undefined : 2));
 
 // ---------------------------------- Utils ----------------------------------
 
-function assertFileExists(options: string | { entrypoint: string, shouldExit: boolean }) {
-  let filePath = typeof options === 'string' 
-    ? options
-    : options.entrypoint;
+function assertFileExists(
+  options: string | { entrypoint: string; shouldExit: boolean },
+) {
+  let filePath = typeof options === "string" ? options : options.entrypoint;
 
-  let shouldExit = typeof options === 'string'
-    ? true
-    : options.shouldExit;
+  let shouldExit = typeof options === "string" ? true : options.shouldExit;
 
   if (!existsSync(filePath)) {
-    console.warn(`ERROR: Path to '${filePath}' doesn't exist`)
+    console.warn(`ERROR: Path to '${filePath}' doesn't exist`);
 
     if (shouldExit) {
       process.exit(1);

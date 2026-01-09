@@ -1,15 +1,15 @@
-import ts from 'typescript';
-import { Entry } from './base_entry';
+import ts from "typescript";
+import { Entry } from "./base_entry";
 
 export class EnumEntry extends Entry<ts.EnumDeclaration> {
-  type = 'enum';
+  type = "enum";
 
   grammar() {
     let members = this.declaration.members.map((member) => {
       let type =
         member.initializer && ts.isStringLiteralLike(member.initializer)
-          ? 'string'
-          : 'number';
+          ? "string"
+          : "number";
 
       return {
         name: member.name.getText(),

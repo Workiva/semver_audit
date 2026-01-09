@@ -4,7 +4,7 @@ name: Semgrep Cron
 on:
   schedule:
     # Weekly, randomly staggered by batch.yaml
-    - cron: '56 14 * * 3'
+    - cron: "56 14 * * 3"
 
 permissions:
   contents: read # Required for actions/checkout

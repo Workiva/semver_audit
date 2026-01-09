@@ -1,14 +1,14 @@
-import { test, expect, describe } from 'vitest';
-import { visitParameters } from '../../../src/core/shared_grammar';
-import { Semver } from '../../../src/core/models';
+import { test, expect, describe } from "vitest";
+import { visitParameters } from "../../../src/core/shared_grammar";
+import { Semver } from "../../../src/core/models";
 
-describe('visitParameters', () => {
+describe("visitParameters", () => {
   test('adding a "required: false" named parameter is a minor', () => {
     expect(
       visitParameters(
         { named: [], positional: [] },
         {
-          named: [{ type: 'int', required: false, name: 'foo' }],
+          named: [{ type: "int", required: false, name: "foo" }],
           positional: [],
         },
       ),
@@ -19,7 +19,7 @@ describe('visitParameters', () => {
       visitParameters(
         { named: [], positional: [] },
         {
-          named: [{ type: 'int', required: true, name: 'foo' }],
+          named: [{ type: "int", required: true, name: "foo" }],
           positional: [],
         },
       ),
@@ -31,13 +31,13 @@ describe('visitParameters', () => {
       visitParameters(
         {
           named: [],
-          positional: [{ type: 'String', required: true, name: 'foo' }],
+          positional: [{ type: "String", required: true, name: "foo" }],
         },
         {
           named: [],
           positional: [
-            { type: 'String', required: true, name: 'foo' },
-            { type: 'int', required: false, name: 'bar' },
+            { type: "String", required: true, name: "foo" },
+            { type: "int", required: false, name: "bar" },
           ],
         },
       ),
@@ -48,13 +48,13 @@ describe('visitParameters', () => {
       visitParameters(
         {
           named: [],
-          positional: [{ type: 'String', required: true, name: 'foo' }],
+          positional: [{ type: "String", required: true, name: "foo" }],
         },
         {
           named: [],
           positional: [
-            { type: 'int', required: true, name: 'bar' },
-            { type: 'String', required: true, name: 'foo' },
+            { type: "int", required: true, name: "bar" },
+            { type: "String", required: true, name: "foo" },
           ],
         },
       ),
@@ -68,28 +68,28 @@ describe('visitParameters', () => {
       visitParameters(
         {
           named: [],
-          positional: [{ type: 'String', required: true, name: 'foo' }],
+          positional: [{ type: "String", required: true, name: "foo" }],
         },
         {
           named: [],
           positional: [
-            { type: 'String', required: true, name: 'foo' },
-            { type: 'int', required: true, name: 'bar' },
+            { type: "String", required: true, name: "foo" },
+            { type: "int", required: true, name: "bar" },
           ],
         },
       ),
     ).toEqual([Semver.major("Adding the required parameter 'bar' is a major")]);
   });
 
-  test('changing a named parameter from optional to required is a major', () => {
+  test("changing a named parameter from optional to required is a major", () => {
     expect(
       visitParameters(
         {
-          named: [{ type: 'int', required: false, name: 'foo' }],
+          named: [{ type: "int", required: false, name: "foo" }],
           positional: [],
         },
         {
-          named: [{ type: 'int', required: true, name: 'foo' }],
+          named: [{ type: "int", required: true, name: "foo" }],
           positional: [],
         },
       ),
@@ -98,15 +98,15 @@ describe('visitParameters', () => {
     ]);
   });
 
-  test('changing a named parameter from required to optional is a minor', () => {
+  test("changing a named parameter from required to optional is a minor", () => {
     expect(
       visitParameters(
         {
-          named: [{ type: 'int', required: true, name: 'foo' }],
+          named: [{ type: "int", required: true, name: "foo" }],
           positional: [],
         },
         {
-          named: [{ type: 'int', required: false, name: 'foo' }],
+          named: [{ type: "int", required: false, name: "foo" }],
           positional: [],
         },
       ),
@@ -115,16 +115,16 @@ describe('visitParameters', () => {
     ]);
   });
 
-  test('changing a positional parameter from required to optional is a minor', () => {
+  test("changing a positional parameter from required to optional is a minor", () => {
     expect(
       visitParameters(
         {
           named: [],
-          positional: [{ type: 'int', required: true, name: 'foo' }],
+          positional: [{ type: "int", required: true, name: "foo" }],
         },
         {
           named: [],
-          positional: [{ type: 'int', required: false, name: 'foo' }],
+          positional: [{ type: "int", required: false, name: "foo" }],
         },
       ),
     ).toEqual([
@@ -132,16 +132,16 @@ describe('visitParameters', () => {
     ]);
   });
 
-  test('changing a positional parameter from optional to required is a major', () => {
+  test("changing a positional parameter from optional to required is a major", () => {
     expect(
       visitParameters(
         {
           named: [],
-          positional: [{ type: 'int', required: false, name: 'foo' }],
+          positional: [{ type: "int", required: false, name: "foo" }],
         },
         {
           named: [],
-          positional: [{ type: 'int', required: true, name: 'foo' }],
+          positional: [{ type: "int", required: true, name: "foo" }],
         },
       ),
     ).toEqual([
@@ -149,15 +149,15 @@ describe('visitParameters', () => {
     ]);
   });
 
-  test('changing the type of a named parameter is a major', () => {
+  test("changing the type of a named parameter is a major", () => {
     expect(
       visitParameters(
         {
-          named: [{ type: 'int', required: true, name: 'foo' }],
+          named: [{ type: "int", required: true, name: "foo" }],
           positional: [],
         },
         {
-          named: [{ type: 'String', required: true, name: 'foo' }],
+          named: [{ type: "String", required: true, name: "foo" }],
           positional: [],
         },
       ),
@@ -165,16 +165,16 @@ describe('visitParameters', () => {
       Semver.major("Changing the type of the named parameter 'foo' is a major"),
     ]);
   });
-  test('changing the type of a positional parameter is a major', () => {
+  test("changing the type of a positional parameter is a major", () => {
     expect(
       visitParameters(
         {
           named: [],
-          positional: [{ type: 'int', required: true, name: 'foo' }],
+          positional: [{ type: "int", required: true, name: "foo" }],
         },
         {
           named: [],
-          positional: [{ type: 'String', required: true, name: 'foo' }],
+          positional: [{ type: "String", required: true, name: "foo" }],
         },
       ),
     ).toEqual([
@@ -182,21 +182,21 @@ describe('visitParameters', () => {
     ]);
   });
 
-  test('reordering positional parameters is a major', () => {
+  test("reordering positional parameters is a major", () => {
     expect(
       visitParameters(
         {
           named: [],
           positional: [
-            { type: 'int', required: true, name: 'foo' },
-            { type: 'String', required: true, name: 'bar' },
+            { type: "int", required: true, name: "foo" },
+            { type: "String", required: true, name: "bar" },
           ],
         },
         {
           named: [],
           positional: [
-            { type: 'String', required: true, name: 'bar' },
-            { type: 'int', required: true, name: 'foo' },
+            { type: "String", required: true, name: "bar" },
+            { type: "int", required: true, name: "foo" },
           ],
         },
       ),
@@ -205,20 +205,20 @@ describe('visitParameters', () => {
       Semver.major("Changing the type of the parameter 'bar' is a major"),
     ]);
   });
-  test('reordering named parameters has no semver', () => {
+  test("reordering named parameters has no semver", () => {
     expect(
       visitParameters(
         {
           named: [
-            { type: 'int', required: true, name: 'foo' },
-            { type: 'int', required: true, name: 'bar' },
+            { type: "int", required: true, name: "foo" },
+            { type: "int", required: true, name: "bar" },
           ],
           positional: [],
         },
         {
           named: [
-            { type: 'int', required: true, name: 'bar' },
-            { type: 'int', required: true, name: 'foo' },
+            { type: "int", required: true, name: "bar" },
+            { type: "int", required: true, name: "foo" },
           ],
           positional: [],
         },
@@ -226,15 +226,15 @@ describe('visitParameters', () => {
     ).toEqual([]);
   });
 
-  test('changing the name of a named parameter is a major', () => {
+  test("changing the name of a named parameter is a major", () => {
     expect(
       visitParameters(
         {
-          named: [{ type: 'int', required: true, name: 'foo' }],
+          named: [{ type: "int", required: true, name: "foo" }],
           positional: [],
         },
         {
-          named: [{ type: 'int', required: true, name: 'bar' }],
+          named: [{ type: "int", required: true, name: "bar" }],
           positional: [],
         },
       ),
@@ -243,16 +243,16 @@ describe('visitParameters', () => {
       Semver.major("Adding the required parameter 'bar' is a major"),
     ]);
   });
-  test('changing the name of a positional parameter has no semver', () => {
+  test("changing the name of a positional parameter has no semver", () => {
     expect(
       visitParameters(
         {
           named: [],
-          positional: [{ type: 'int', required: true, name: 'foo' }],
+          positional: [{ type: "int", required: true, name: "foo" }],
         },
         {
           named: [],
-          positional: [{ type: 'int', required: true, name: 'bar' }],
+          positional: [{ type: "int", required: true, name: "bar" }],
         },
       ),
     ).toEqual([]);

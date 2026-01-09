@@ -1,25 +1,25 @@
-import { expect, test } from 'vitest';
-import { execute } from './utils';
+import { expect, test } from "vitest";
+import { execute } from "./utils";
 
-test('field', () => {
+test("field", () => {
   let res = execute(`
     export class Foo {
       a: string
     }
   `);
 
-  expect(res['test_package/index.ts/Foo/a'].grammar).toEqual({
-    name: 'a',
+  expect(res["test_package/index.ts/Foo/a"].grammar).toEqual({
+    name: "a",
     getter: true,
     setter: true,
     is_abstract: false,
     static: false,
-    type: 'string',
-    signature: 'a: string;',
+    type: "string",
+    signature: "a: string;",
   });
 });
 
-test('getter only', () => {
+test("getter only", () => {
   let res = execute(`
     export class Foo {
       readonly a: string;
@@ -27,46 +27,46 @@ test('getter only', () => {
     }
   `);
 
-  expect(res['test_package/index.ts/Foo/a'].grammar).toEqual({
-    name: 'a',
+  expect(res["test_package/index.ts/Foo/a"].grammar).toEqual({
+    name: "a",
     getter: true,
     setter: false,
     is_abstract: false,
     static: false,
-    type: 'string',
-    signature: 'readonly a: string;',
+    type: "string",
+    signature: "readonly a: string;",
   });
 
-  expect(res['test_package/index.ts/Foo/b'].grammar).toEqual({
-    name: 'b',
+  expect(res["test_package/index.ts/Foo/b"].grammar).toEqual({
+    name: "b",
     getter: true,
     setter: false,
     is_abstract: false,
     static: false,
-    type: 'number',
-    signature: 'get b(): number;',
+    type: "number",
+    signature: "get b(): number;",
   });
 });
 
-test('setter only', () => {
+test("setter only", () => {
   let res = execute(`
     export class Foo {
       set a(val: string) { };
     }
   `);
 
-  expect(res['test_package/index.ts/Foo/a'].grammar).toEqual({
-    name: 'a',
+  expect(res["test_package/index.ts/Foo/a"].grammar).toEqual({
+    name: "a",
     getter: false,
     setter: true,
     is_abstract: false,
     static: false,
-    type: 'string',
-    signature: 'set a(val: string);',
+    type: "string",
+    signature: "set a(val: string);",
   });
 });
 
-test('type inference', () => {
+test("type inference", () => {
   let res = execute(`
     export class Foo {
       a = 'str value';
@@ -74,20 +74,20 @@ test('type inference', () => {
     }
   `);
 
-  expect(res['test_package/index.ts/Foo/a'].grammar).toEqual(
+  expect(res["test_package/index.ts/Foo/a"].grammar).toEqual(
     expect.objectContaining({
-      type: 'string',
+      type: "string",
     }),
   );
 
-  expect(res['test_package/index.ts/Foo/b'].grammar).toEqual(
+  expect(res["test_package/index.ts/Foo/b"].grammar).toEqual(
     expect.objectContaining({
-      type: 'number',
+      type: "number",
     }),
   );
 });
 
-test('inheritance', () => {
+test("inheritance", () => {
   let res = execute(`
     class AClass {
       a = 1
@@ -102,13 +102,13 @@ test('inheritance', () => {
     }
   `);
 
-  expect(res['test_package/index.ts/CClass/a']?.grammar).toEqual(
-    expect.objectContaining({type: 'number'})
-  )
-  expect(res['test_package/index.ts/CClass/b']?.grammar).toEqual(
-    expect.objectContaining({type: 'number'})
-  )
-  expect(res['test_package/index.ts/CClass/c']?.grammar).toEqual(
-    expect.objectContaining({type: 'number'})
-  )
-})
+  expect(res["test_package/index.ts/CClass/a"]?.grammar).toEqual(
+    expect.objectContaining({ type: "number" }),
+  );
+  expect(res["test_package/index.ts/CClass/b"]?.grammar).toEqual(
+    expect.objectContaining({ type: "number" }),
+  );
+  expect(res["test_package/index.ts/CClass/c"]?.grammar).toEqual(
+    expect.objectContaining({ type: "number" }),
+  );
+});

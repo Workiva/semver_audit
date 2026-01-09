@@ -1,15 +1,15 @@
-import ts from 'typescript';
+import ts from "typescript";
 import {
   buildTrimmedArrowFunction,
   Entry,
   parametersFor,
   returnTypeFor,
-} from './base_entry';
+} from "./base_entry";
 
 export class FunctionEntry extends Entry<
   ts.FunctionDeclaration | ts.VariableDeclaration
 > {
-  type = 'function';
+  type = "function";
 
   grammar = () => {
     var signatureDec = ts.isVariableDeclaration(this.declaration)
@@ -17,7 +17,7 @@ export class FunctionEntry extends Entry<
       : this.declaration;
 
     return {
-      name: this.declaration.name?.getText() ?? '<unknown name>',
+      name: this.declaration.name?.getText() ?? "<unknown name>",
       parameters: parametersFor(signatureDec, this.typeChecker),
       return_type: returnTypeFor(signatureDec, this.typeChecker),
     };

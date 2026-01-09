@@ -1,26 +1,26 @@
-import { test, expect } from 'vitest';
+import { test, expect } from "vitest";
 
 import {
   ClassGrammar,
   ConstructorGrammar,
-} from '../../../../src/plugins/dart/dart_grammar';
+} from "../../../../src/plugins/dart/dart_grammar";
 
-import { ApiNode } from '../../../../src/core/plugin_interface';
-import { Semver } from '../../../../src/core/models';
-import { buildClassGrammar, buildConstructorGrammar, runDiff } from './utils';
-import { AncestorGrammar, buildAncestor } from '../shared_utils';
+import { ApiNode } from "../../../../src/core/plugin_interface";
+import { Semver } from "../../../../src/core/models";
+import { buildClassGrammar, buildConstructorGrammar, runDiff } from "./utils";
+import { AncestorGrammar, buildAncestor } from "../shared_utils";
 
 // NOTE: parameter unit tests are ran within test/core/shared_grammar.test.ts
 
-test('adding a constructor is a minor', () =>
+test("adding a constructor is a minor", () =>
   expect(
     runConstructorDiff({
       base: undefined,
       target: {},
     }),
-  ).toEqual([Semver.minor('Adding to the public api is a minor')]));
+  ).toEqual([Semver.minor("Adding to the public api is a minor")]));
 
-test('adding a constructor to a new class is ignored', () =>
+test("adding a constructor to a new class is ignored", () =>
   expect(
     runConstructorDiff({
       base: undefined,
@@ -41,14 +41,14 @@ function runConstructorDiff(options: {
 }): Semver[] {
   return runDiff(
     new ApiNode<ConstructorGrammar>({
-      type: 'constructor',
+      type: "constructor",
       base:
         options.base != null
           ? buildConstructorGrammar(options.base)
           : undefined,
       target: buildConstructorGrammar(options.target),
       ancestor: buildAncestor(
-        'class',
+        "class",
         options.ancestorClass,
         buildClassGrammar,
       ),

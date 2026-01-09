@@ -1,6 +1,6 @@
-import { Semver } from './models';
+import { Semver } from "./models";
 
-import { dequal } from 'dequal';
+import { dequal } from "dequal";
 
 export type Grammar = { [key: string]: any };
 
@@ -190,11 +190,11 @@ export abstract class SemverAuditPlugin {
   abstract shouldExecute(language: string): boolean;
 
   onAdd(node: AddedApiNode<Grammar>): Semver[] {
-    return [Semver.minor('Adding to the public api is a minor')];
+    return [Semver.minor("Adding to the public api is a minor")];
   }
 
   onRemove(node: RemovedApiNode<Grammar>): Semver[] {
-    return [Semver.major('Removing from the public api is a major')];
+    return [Semver.major("Removing from the public api is a major")];
   }
 
   /** Visits the provided node and returns a list of semver changes */

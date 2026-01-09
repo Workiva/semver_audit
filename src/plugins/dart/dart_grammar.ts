@@ -1,5 +1,5 @@
-import { Grammar } from '../../core/plugin_interface';
-import { ParametersGrammar } from '../../core/shared_grammar';
+import { Grammar } from "../../core/plugin_interface";
+import { ParametersGrammar } from "../../core/shared_grammar";
 
 export interface DartGrammar extends Grammar {
   annotations?: string[];
@@ -26,7 +26,7 @@ export interface EnumGrammar extends DartGrammar {
 }
 
 export interface TypedefGrammar extends DartGrammar {
-  typedef_kind: 'type_alias' | 'function_type_alias';
+  typedef_kind: "type_alias" | "function_type_alias";
 
   // populated when typedef_kind is 'function_type_alias'
   parameters?: ParametersGrammar;

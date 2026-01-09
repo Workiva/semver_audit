@@ -105,14 +105,14 @@ export interface SemverParameter {
 
 export interface SemverTypeAlias {
   name: string;
-  typedef_kind: 'type_alias';
+  typedef_kind: "type_alias";
   aliased_type: string;
   signature: string;
 }
 
 export interface SemverFunctionTypeAlias {
   name: string;
-  typedef_kind: 'function_type_alias';
+  typedef_kind: "function_type_alias";
   parameters: SemverParameters;
   return_type: string;
   signature: string;

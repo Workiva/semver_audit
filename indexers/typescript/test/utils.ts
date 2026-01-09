@@ -1,19 +1,19 @@
-import ts from 'typescript';
-import { generateSemverAuditReport } from '../src/generate';
-import type { SemverAuditMap } from '../src/models';
+import ts from "typescript";
+import { generateSemverAuditReport } from "../src/generate";
+import type { SemverAuditMap } from "../src/models";
 
 export function execute(
   files: { [path: string]: string } | string,
-  entrypoints: string[] = ['index.ts'],
+  entrypoints: string[] = ["index.ts"],
 ): SemverAuditMap {
-  if (typeof files === 'string') {
-    files = { 'index.ts': files };
+  if (typeof files === "string") {
+    files = { "index.ts": files };
   }
   let { host, options } = initProject(files);
 
   return generateSemverAuditReport({
-    packageName: 'test_package',
-    packageRoot: '',
+    packageName: "test_package",
+    packageRoot: "",
     entrypoints: entrypoints,
     compilerOptions: options,
     compilerHost: host,
@@ -28,7 +28,7 @@ function initProject(files: { [name: string]: string }): {
     fileExists: (fileName) => files[fileName] !== undefined,
     readFile: (fileName) => files[fileName],
     writeFile: () => {
-      throw new Error('writeFile not implemented');
+      throw new Error("writeFile not implemented");
     },
 
     // This method returns the list of directories (can be empty for in-memory)
@@ -38,7 +38,7 @@ function initProject(files: { [name: string]: string }): {
     getDefaultLibFileName: ts.getDefaultLibFilePath,
 
     // This tells TypeScript how to resolve module names (for simplicity we don't use external modules)
-    getCurrentDirectory: () => '',
+    getCurrentDirectory: () => "",
 
     // Create a default library path for TypeScript (this can return TypeScript's lib.d.ts)
     getCanonicalFileName: (filePath) => filePath,
@@ -47,7 +47,7 @@ function initProject(files: { [name: string]: string }): {
     useCaseSensitiveFileNames: () => false,
 
     // Return the source code's version
-    getNewLine: () => '\n',
+    getNewLine: () => "\n",
 
     // Return the in-memory file content when requested
     getSourceFile: (filePath, languageVersion) => {

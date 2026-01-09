@@ -1,16 +1,16 @@
-import ts from 'typescript';
-import path from 'path';
-import type { SemverAuditMap, SemverEntry } from './models';
-import { FunctionEntry } from './entries/function';
-import { ClassEntry } from './entries/class';
-import { EnumEntry } from './entries/enum';
-import { FieldEntry } from './entries/field';
-import { MethodEntry } from './entries/method';
-import { TypeAliasEntry } from './entries/type_alias';
-import { InterfaceEntry } from './entries/interface';
-import { VariableEntry } from './entries/variable';
-import { ConstructorEntry } from './entries/constructor';
-import { Entry } from './entries/base_entry';
+import ts from "typescript";
+import path from "path";
+import type { SemverAuditMap, SemverEntry } from "./models";
+import { FunctionEntry } from "./entries/function";
+import { ClassEntry } from "./entries/class";
+import { EnumEntry } from "./entries/enum";
+import { FieldEntry } from "./entries/field";
+import { MethodEntry } from "./entries/method";
+import { TypeAliasEntry } from "./entries/type_alias";
+import { InterfaceEntry } from "./entries/interface";
+import { VariableEntry } from "./entries/variable";
+import { ConstructorEntry } from "./entries/constructor";
+import { Entry } from "./entries/base_entry";
 
 export function generateSemverAuditReport({
   packageName,
@@ -31,7 +31,7 @@ export function generateSemverAuditReport({
   entries.push({
     key: rootKey,
     parent_key: null,
-    type: 'package',
+    type: "package",
     grammar: {},
     meta: {},
   });
@@ -50,10 +50,10 @@ export function generateSemverAuditReport({
     entries.push({
       key: entrypointKey,
       parent_key: rootKey,
-      type: 'entry_point',
+      type: "entry_point",
       grammar: {},
       meta: {
-        uri: path.relative(packageRoot, entrypoint)
+        uri: path.relative(packageRoot, entrypoint),
       },
     });
 
@@ -117,7 +117,9 @@ function entriesForSymbol(
       new TypeAliasEntry(packageRoot, declaration, key, typeChecker),
     );
   } else if (ts.isInterfaceDeclaration(declaration)) {
-    entries.push(new InterfaceEntry(packageRoot, declaration, key, typeChecker));
+    entries.push(
+      new InterfaceEntry(packageRoot, declaration, key, typeChecker),
+    );
   } else if (ts.isEnumDeclaration(declaration)) {
     entries.push(new EnumEntry(packageRoot, declaration, key, typeChecker));
   } else {
@@ -156,12 +158,9 @@ function entriesForClass(
     );
   }
 
-  entries = entries.concat(membersForClass(
-    packageRoot,
-    declaration,
-    classEntry.key,
-    typeChecker,
-  ));
+  entries = entries.concat(
+    membersForClass(packageRoot, declaration, classEntry.key, typeChecker),
+  );
 
   return entries;
 }
@@ -184,7 +183,7 @@ function membersForClass(
     )
     .filter((node) => {
       // filter out js's version of private nodes: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_properties
-      return !node.name.getText().startsWith('#');
+      return !node.name.getText().startsWith("#");
     })
     .filter((node) => {
       // by default typescript treats methods without modifiers as public
@@ -201,23 +200,20 @@ function membersForClass(
         member.initializer &&
         ts.isArrowFunction(member.initializer))
     ) {
-      entries.push(
-        new MethodEntry(packageRoot, member, classKey, typeChecker),
-      );
+      entries.push(new MethodEntry(packageRoot, member, classKey, typeChecker));
     } else if (
       ts.isPropertyDeclaration(member) ||
       ts.isGetAccessor(member) ||
       ts.isSetAccessor(member)
     ) {
-      entries.push(
-        new FieldEntry(packageRoot, member, classKey, typeChecker),
-      );
+      entries.push(new FieldEntry(packageRoot, member, classKey, typeChecker));
     } else {
       throw Error(`Received unsupported class member type: ${member}`);
     }
   }
 
-  let extendsClass = declaration.heritageClauses
+  let extendsClass =
+    declaration.heritageClauses
       ?.filter((clause) => clause.token === ts.SyntaxKind.ExtendsKeyword)
       ?.flatMap((clause) => clause.types) ?? [];
 
@@ -233,13 +229,10 @@ function membersForClass(
       // do the typecheck so we can pass the declaration into the recursive function
       if (!ts.isClassDeclaration(decl)) continue;
 
-      entries = entries.concat(membersForClass(
-        packageRoot,
-        decl,
-        classKey,
-        typeChecker
-      ))
-    }  
+      entries = entries.concat(
+        membersForClass(packageRoot, decl, classKey, typeChecker),
+      );
+    }
   }
 
   return entries;

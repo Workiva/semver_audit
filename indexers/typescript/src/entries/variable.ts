@@ -1,8 +1,8 @@
-import { Entry } from './base_entry';
-import ts from 'typescript';
+import { Entry } from "./base_entry";
+import ts from "typescript";
 
 export class VariableEntry extends Entry<ts.VariableDeclaration> {
-  type = 'variable';
+  type = "variable";
 
   grammar = () => ({
     name: this.declaration.name.getText(),

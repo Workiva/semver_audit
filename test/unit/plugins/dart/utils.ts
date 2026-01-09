@@ -1,11 +1,11 @@
-import { Semver } from '../../../../src/core/models';
+import { Semver } from "../../../../src/core/models";
 import {
   AddedApiNode,
   ApiNode,
   ChangedApiNode,
-  RemovedApiNode
-} from '../../../../src/core/plugin_interface';
-import DartPlugin from '../../../../src/plugins/dart/dart';
+  RemovedApiNode,
+} from "../../../../src/core/plugin_interface";
+import DartPlugin from "../../../../src/plugins/dart/dart";
 import {
   ClassGrammar,
   ConstructorGrammar,
@@ -16,7 +16,7 @@ import {
   MethodGrammar,
   TypedefGrammar,
   VariableGrammar,
-} from '../../../../src/plugins/dart/dart_grammar';
+} from "../../../../src/plugins/dart/dart_grammar";
 
 export function runDiff(node: ApiNode<DartGrammar>): Semver[] {
   let plugin = new DartPlugin();
@@ -38,7 +38,7 @@ export function buildVariableGrammar(
     is_abstract: options.is_abstract ?? false,
     setter: options.setter ?? false,
     static: options.static ?? false,
-    type: options.type ?? '',
+    type: options.type ?? "",
     is_late: options.is_late ?? false,
   };
 }
@@ -49,7 +49,7 @@ export function buildFunctionGrammar(
   return {
     annotations: options.annotations ?? [],
     parameters: options.parameters ?? { named: [], positional: [] },
-    return_type: options.return_type ?? '',
+    return_type: options.return_type ?? "",
   };
 }
 
@@ -67,10 +67,10 @@ export function buildTypedefGrammar(
 ): TypedefGrammar {
   return {
     annotations: options.annotations ?? [],
-    aliased_type: options.aliased_type ?? '',
+    aliased_type: options.aliased_type ?? "",
     parameters: options.parameters ?? { named: [], positional: [] },
-    return_type: options.return_type ?? '',
-    typedef_kind: options.typedef_kind ?? 'type_alias',
+    return_type: options.return_type ?? "",
+    typedef_kind: options.typedef_kind ?? "type_alias",
   };
 }
 
@@ -101,7 +101,7 @@ export function buildMethodGrammar(
   return {
     annotations: options.annotations ?? [],
     static: options.static ?? false,
-    return_type: options.return_type ?? 'void',
+    return_type: options.return_type ?? "void",
     is_abstract: options.is_abstract ?? false,
     parameters: options.parameters ?? { named: [], positional: [] },
   };
@@ -115,7 +115,7 @@ export function buildFieldGrammar(
     getter: options.getter ?? false,
     setter: options.setter ?? false,
     static: options.static ?? false,
-    type: options.type ?? 'string',
+    type: options.type ?? "string",
     is_abstract: options.is_abstract ?? false,
     is_late: options.is_late ?? false,
   };

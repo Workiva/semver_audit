@@ -1,7 +1,7 @@
-import { expect, test } from 'vitest';
-import { execute } from './utils';
+import { expect, test } from "vitest";
+import { execute } from "./utils";
 
-test('basic enum', () => {
+test("basic enum", () => {
   let res = execute(`
     export enum Foo {
       a,
@@ -10,18 +10,18 @@ test('basic enum', () => {
     }
   `);
 
-  expect(res['test_package/index.ts/Foo'].grammar).toEqual({
-    name: 'Foo',
+  expect(res["test_package/index.ts/Foo"].grammar).toEqual({
+    name: "Foo",
     values: [
-      { name: 'a', type: 'number' },
-      { name: 'b', type: 'number' },
-      { name: 'c', type: 'number' },
+      { name: "a", type: "number" },
+      { name: "b", type: "number" },
+      { name: "c", type: "number" },
     ],
-    signature: 'enum Foo { a, b, c }',
+    signature: "enum Foo { a, b, c }",
   });
 });
 
-test('heterogeneous enum', () => {
+test("heterogeneous enum", () => {
   let res = execute(`
     export enum Foo {
       a,
@@ -30,12 +30,12 @@ test('heterogeneous enum', () => {
     }
   `);
 
-  expect(res['test_package/index.ts/Foo'].grammar).toEqual({
-    name: 'Foo',
+  expect(res["test_package/index.ts/Foo"].grammar).toEqual({
+    name: "Foo",
     values: [
-      { name: 'a', type: 'number' },
-      { name: 'b', type: 'number' },
-      { name: 'c', type: 'string' },
+      { name: "a", type: "number" },
+      { name: "b", type: "number" },
+      { name: "c", type: "string" },
     ],
     signature: `enum Foo { a, b = 4, c = 'asdf' }`,
   });

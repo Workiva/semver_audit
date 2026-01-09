@@ -1,5 +1,5 @@
-import { Grammar } from '../../core/plugin_interface';
-import { ParametersGrammar } from '../../core/shared_grammar';
+import { Grammar } from "../../core/plugin_interface";
+import { ParametersGrammar } from "../../core/shared_grammar";
 
 export interface GolangGrammar extends Grammar {}
 
@@ -38,14 +38,14 @@ export interface FieldGrammar extends GolangGrammar {
    */
   is_abstract: boolean;
 
-  /** 
+  /**
    * Any struct tags that this field might have `json:"foobar,omitempty"`.
    * Not defined when the field has no struct tags
-   * 
+   *
    * The key represents the struct tag name (eg: 'json')
    * The value represents the list of csv entries in the tag options
    */
-  tags?: Record<string, string[]>
+  tags?: Record<string, string[]>;
 }
 
 export interface MethodGrammar extends GolangGrammar {

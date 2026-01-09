@@ -4,7 +4,7 @@ description: Tool for generating and reporting a representation of a Dart packag
 homepage: https://github.com/Workiva/semver-audit
 
 environment:
-  sdk: '>=2.19.6 <4.0.0'
+  sdk: ">=2.19.6 <4.0.0"
 
 executables:
   semver_audit:

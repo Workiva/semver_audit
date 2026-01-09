@@ -1,10 +1,10 @@
-import ts from 'typescript';
-import { Entry, isAbstract, isReadonly, isStatic } from './base_entry';
+import ts from "typescript";
+import { Entry, isAbstract, isReadonly, isStatic } from "./base_entry";
 
 export class FieldEntry extends Entry<
   ts.PropertyDeclaration | ts.GetAccessorDeclaration | ts.SetAccessorDeclaration
 > {
-  type = 'field';
+  type = "field";
 
   grammar() {
     let getter =

@@ -1,4 +1,4 @@
-import { Semver } from './models';
+import { Semver } from "./models";
 
 export interface ParametersGrammar {
   named: ParameterGrammar[];

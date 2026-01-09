@@ -1,8 +1,8 @@
-import ts from 'typescript';
-import { Entry, isAbstract } from './base_entry';
+import ts from "typescript";
+import { Entry, isAbstract } from "./base_entry";
 
 export class ClassEntry extends Entry<ts.ClassDeclaration> {
-  type = 'class';
+  type = "class";
 
   grammar() {
     let extendsClause =
@@ -18,7 +18,7 @@ export class ClassEntry extends Entry<ts.ClassDeclaration> {
         ?.map((type) => type.getText()) ?? [];
 
     return {
-      name: this.declaration.name?.text ?? '<unknown name>',
+      name: this.declaration.name?.text ?? "<unknown name>",
       is_abstract: isAbstract(this.declaration.modifiers),
       extends: extendsClause,
       implements: implementsClauses,

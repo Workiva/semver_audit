@@ -1,27 +1,27 @@
-import { test, expect } from 'vitest';
+import { test, expect } from "vitest";
 
-import DartPlugin from '../../../../src/plugins/dart/dart';
-import { VariableGrammar } from '../../../../src/plugins/dart/dart_grammar';
+import DartPlugin from "../../../../src/plugins/dart/dart";
+import { VariableGrammar } from "../../../../src/plugins/dart/dart_grammar";
 
 import {
   AddedApiNode,
   ApiNode,
   ChangedApiNode,
   RemovedApiNode,
-} from '../../../../src/core/plugin_interface';
-import { Semver } from '../../../../src/core/models';
+} from "../../../../src/core/plugin_interface";
+import { Semver } from "../../../../src/core/models";
 import {
   buildClassGrammar,
   buildFieldGrammar,
   buildVariableGrammar,
-} from './utils';
+} from "./utils";
 
-for (const annotation of ['@experimental', '@visibleForTesting']) {
+for (const annotation of ["@experimental", "@visibleForTesting"]) {
   test(`adding ${annotation} to any api entry is a major`, () => {
     expect(
       new DartPlugin().onChange(
         new ChangedApiNode<VariableGrammar>({
-          type: 'variable',
+          type: "variable",
           base: buildVariableGrammar({}),
           target: buildVariableGrammar({ annotations: [annotation] }),
         }),
@@ -36,7 +36,7 @@ for (const annotation of ['@experimental', '@visibleForTesting']) {
     expect(
       new DartPlugin().onChange(
         new ChangedApiNode<VariableGrammar>({
-          type: 'variable',
+          type: "variable",
           base: buildVariableGrammar({ annotations: [annotation] }),
           target: buildVariableGrammar({}),
         }),
@@ -48,7 +48,7 @@ for (const annotation of ['@experimental', '@visibleForTesting']) {
     expect(
       new DartPlugin().onAdd(
         new AddedApiNode<VariableGrammar>({
-          type: 'variable',
+          type: "variable",
           base: undefined,
           target: buildVariableGrammar({ annotations: [annotation] }),
         }),
@@ -60,7 +60,7 @@ for (const annotation of ['@experimental', '@visibleForTesting']) {
     expect(
       new DartPlugin().onRemove(
         new RemovedApiNode<VariableGrammar>({
-          type: 'variable',
+          type: "variable",
           base: buildVariableGrammar({ annotations: [annotation] }),
           target: undefined,
         }),
@@ -72,14 +72,14 @@ for (const annotation of ['@experimental', '@visibleForTesting']) {
     expect(
       new DartPlugin().onChange(
         new ChangedApiNode<VariableGrammar>({
-          type: 'variable',
+          type: "variable",
           base: buildVariableGrammar({
             annotations: [annotation],
-            type: 'int',
+            type: "int",
           }),
           target: buildVariableGrammar({
             annotations: [annotation],
-            type: 'String',
+            type: "String",
           }),
         }),
       ),
@@ -90,11 +90,11 @@ for (const annotation of ['@experimental', '@visibleForTesting']) {
     expect(
       new DartPlugin().onChange(
         new ChangedApiNode<VariableGrammar>({
-          type: 'field',
-          base: buildFieldGrammar({ type: 'int' }),
-          target: buildFieldGrammar({ type: 'String' }),
+          type: "field",
+          base: buildFieldGrammar({ type: "int" }),
+          target: buildFieldGrammar({ type: "String" }),
           ancestor: new ApiNode({
-            type: 'class',
+            type: "class",
             base: buildClassGrammar({ annotations: [annotation] }),
             target: buildClassGrammar({ annotations: [annotation] }),
           }),

@@ -1,4 +1,4 @@
-import ts from 'typescript';
+import ts from "typescript";
 import {
   buildTrimmedArrowFunction,
   Entry,
@@ -6,12 +6,12 @@ import {
   isStatic,
   parametersFor,
   returnTypeFor,
-} from './base_entry';
+} from "./base_entry";
 
 export class MethodEntry extends Entry<
   ts.MethodDeclaration | ts.PropertyDeclaration
 > {
-  type = 'method';
+  type = "method";
 
   grammar() {
     var signatureDec = ts.isPropertyDeclaration(this.declaration)

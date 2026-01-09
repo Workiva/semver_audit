@@ -1,8 +1,8 @@
-import ts from 'typescript';
-import { Entry } from './base_entry';
+import ts from "typescript";
+import { Entry } from "./base_entry";
 
 export class TypeAliasEntry extends Entry<ts.TypeAliasDeclaration> {
-  type = 'type_alias';
+  type = "type_alias";
 
   grammar() {
     let name = this.declaration.name.getText();
@@ -13,39 +13,42 @@ export class TypeAliasEntry extends Entry<ts.TypeAliasDeclaration> {
         if (ts.isPropertySignature(member) && member.type) {
           members[member.name.getText()] = {
             required: member.questionToken == null,
-            readonly: member.modifiers?.some(mod => mod.kind === ts.SyntaxKind.ReadonlyKeyword) ?? false,
-            type: member.type.getText()
-          }
+            readonly:
+              member.modifiers?.some(
+                (mod) => mod.kind === ts.SyntaxKind.ReadonlyKeyword,
+              ) ?? false,
+            type: member.type.getText(),
+          };
         }
       }
 
-      return { 
-        name, 
+      return {
+        name,
         type: {
-          kind: 'object',
+          kind: "object",
           members,
-        }
-      }
+        },
+      };
     } else if (ts.isFunctionTypeNode(this.declaration.type)) {
-      return { 
-        name, 
+      return {
+        name,
         type: {
-          kind: 'function',
+          kind: "function",
           parameters: {
             named: [],
             positional: this.declaration.type.parameters.map((param) => ({
               name: param.name.getText(),
-              type: param.type?.getText() ?? 'any',
+              type: param.type?.getText() ?? "any",
               required: !(
                 param.questionToken != null || param.initializer != null
               ),
-            }))
+            })),
           },
           return_type: this.declaration.type.type.getText(),
-        }
-      }
+        },
+      };
     } else {
-      return { name, type: this.declaration.type.getText() }
+      return { name, type: this.declaration.type.getText() };
     }
   }
 

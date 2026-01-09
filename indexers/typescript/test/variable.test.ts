@@ -1,35 +1,35 @@
-import { expect, test } from 'vitest';
-import { execute } from './utils';
+import { expect, test } from "vitest";
+import { execute } from "./utils";
 
-test('variable', () => {
+test("variable", () => {
   let res = execute(`
     export const foo: string = '';
   `);
 
-  expect(res['test_package/index.ts/foo'].grammar).toEqual({
-    name: 'foo',
+  expect(res["test_package/index.ts/foo"].grammar).toEqual({
+    name: "foo",
     getter: true,
     setter: false,
-    type: 'string',
+    type: "string",
     signature: `foo: string`,
   });
 });
 
 // setters are not currently supported by semver-audit-typescript
-test.skip('setter', () => {
+test.skip("setter", () => {
   let res = execute(`
     export var foo: string = '';
     export let bar: string = '';
   `);
 
-  expect(res['test_package/index.ts/foo'].grammar).toEqual(
+  expect(res["test_package/index.ts/foo"].grammar).toEqual(
     expect.objectContaining({
       setter: true,
       getter: true,
     }),
   );
 
-  expect(res['test_package/index.ts/bar'].grammar).toEqual(
+  expect(res["test_package/index.ts/bar"].grammar).toEqual(
     expect.objectContaining({
       setter: true,
       getter: true,
@@ -37,7 +37,7 @@ test.skip('setter', () => {
   );
 });
 
-test('type inference', () => {
+test("type inference", () => {
   let res = execute(`
     let _foo: string = '';
     export const foo = _foo;
@@ -46,14 +46,14 @@ test('type inference', () => {
     export const bar = _bar;
   `);
 
-  expect(res['test_package/index.ts/foo'].grammar).toEqual(
+  expect(res["test_package/index.ts/foo"].grammar).toEqual(
     expect.objectContaining({
-      type: 'string',
+      type: "string",
     }),
   );
-  expect(res['test_package/index.ts/bar'].grammar).toEqual(
+  expect(res["test_package/index.ts/bar"].grammar).toEqual(
     expect.objectContaining({
-      type: 'number',
+      type: "number",
     }),
   );
 });

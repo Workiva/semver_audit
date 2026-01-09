@@ -1,7 +1,7 @@
-import { globby } from 'globby';
-import { DiffContext, SemverAuditReport } from '../core/models';
-import fs from 'fs';
-import { JSONParser } from '@streamparser/json-node';
+import { globby } from "globby";
+import { DiffContext, SemverAuditReport } from "../core/models";
+import fs from "fs";
+import { JSONParser } from "@streamparser/json-node";
 
 /**
  * Given a list of paths for base and target semver-audit reports, returns a list of DiffContext
@@ -65,26 +65,26 @@ async function readSemverAuditFile(path: string): Promise<SemverAuditReport> {
     const stream = fs.createReadStream(path);
 
     const parser = new JSONParser({
-      paths: ['$.indexer_version', '$.language', '$.root_key', '$.exports.*'],
+      paths: ["$.indexer_version", "$.language", "$.root_key", "$.exports.*"],
     });
     stream.pipe(parser);
 
     const agg: SemverAuditReport = {
-      indexer_version: '',
-      language: '',
-      root_key: '',
+      indexer_version: "",
+      language: "",
+      root_key: "",
       exports: {},
     };
-    parser.on('data', ({ key, value, parent, stack }) => {
+    parser.on("data", ({ key, value, parent, stack }) => {
       if (stack.length == 1) {
         switch (key) {
-          case 'indexer_version':
+          case "indexer_version":
             agg.indexer_version = value;
             break;
-          case 'language':
+          case "language":
             agg.language = value;
             break;
-          case 'root_key':
+          case "root_key":
             agg.root_key = value;
             break;
         }
@@ -93,7 +93,7 @@ async function readSemverAuditFile(path: string): Promise<SemverAuditReport> {
       }
     });
 
-    parser.on('error', rej);
-    parser.on('close', () => acc(agg));
+    parser.on("error", rej);
+    parser.on("close", () => acc(agg));
   });
 }

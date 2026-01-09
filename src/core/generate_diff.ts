@@ -1,4 +1,4 @@
-import { DiffContext, DiffResult, Semver } from './models';
+import { DiffContext, DiffResult, Semver } from "./models";
 import {
   AddedApiNode,
   ApiNode,
@@ -6,7 +6,7 @@ import {
   Grammar,
   RemovedApiNode,
   SemverAuditPlugin,
-} from './plugin_interface';
+} from "./plugin_interface";
 
 export function generateDiff(
   plugins: SemverAuditPlugin[],
@@ -23,7 +23,7 @@ export function generateDiff(
     let parentKey = target[key]?.parent_key ?? base[key]?.parent_key;
 
     // some indexers use `parent_key: ""`, treat this as undefined
-    if (parentKey == '') parentKey = undefined;
+    if (parentKey == "") parentKey = undefined;
 
     nodeCache[key] = new ApiNode({
       type: target[key]?.type ?? base[key]?.type!,

@@ -1,13 +1,13 @@
-import { Semver } from '../../core/models';
+import { Semver } from "../../core/models";
 import {
   AddedApiNode,
   ApiNode,
   ChangedApiNode,
   RemovedApiNode,
   SemverAuditPlugin,
-} from '../../core/plugin_interface';
+} from "../../core/plugin_interface";
 
-import { ClassGrammar, DartGrammar } from '../dart/dart_grammar';
+import { ClassGrammar, DartGrammar } from "../dart/dart_grammar";
 
 /** A plugin specific to over_react language features.
  *
@@ -15,7 +15,7 @@ import { ClassGrammar, DartGrammar } from '../dart/dart_grammar';
  */
 export default class OverReactPlugin extends SemverAuditPlugin {
   override shouldExecute(language: string): boolean {
-    return language === 'dart';
+    return language === "dart";
   }
 
   override onAdd(node: AddedApiNode<DartGrammar>): Semver[] {
@@ -23,8 +23,8 @@ export default class OverReactPlugin extends SemverAuditPlugin {
     // apply its default semver justification
     if (!this.shouldApply(node)) return [];
 
-    let parentClass = node.getAncestorOfType<ClassGrammar>('class');
-    if (parentClass == null) throw Error('Unable to retrieve class for field');
+    let parentClass = node.getAncestorOfType<ClassGrammar>("class");
+    if (parentClass == null) throw Error("Unable to retrieve class for field");
 
     // If the parent class is also new, do nothing and let the Dart plugin
     // handle the addition as a minor.
@@ -44,14 +44,19 @@ export default class OverReactPlugin extends SemverAuditPlugin {
   override onChange(node: ChangedApiNode<DartGrammar>): Semver[] {
     if (!this.shouldApply(node)) return [];
 
-
     if (node.wasEnabled((g) => g.is_late)) {
       let removedAnnotations = node.getRemoved((g) => g.annotations ?? []);
 
-      if (removedAnnotations.includes('@requiredProp')) {
-        return [Semver.major(`Migrating from '@requiredProps' to 'late' is a major in many cases. See https://github.com/Workiva/semver-audit/wiki/Migrating-over_react-props-from-@requiredProp-to-late`)];
+      if (removedAnnotations.includes("@requiredProp")) {
+        return [
+          Semver.major(
+            `Migrating from '@requiredProps' to 'late' is a major in many cases. See https://github.com/Workiva/semver-audit/wiki/Migrating-over_react-props-from-@requiredProp-to-late`,
+          ),
+        ];
       } else {
-        return [Semver.major('Making an existing prop field required is a major')];
+        return [
+          Semver.major("Making an existing prop field required is a major"),
+        ];
       }
     }
 
@@ -61,7 +66,7 @@ export default class OverReactPlugin extends SemverAuditPlugin {
   // ---------------------------------- Utils ----------------------------------
 
   private shouldApply(node: ApiNode<DartGrammar>): boolean {
-    if (node.type != 'field') return false;
+    if (node.type != "field") return false;
 
     const isNotGenerated =
       node.target?.annotations?.some((a) =>
@@ -69,9 +74,11 @@ export default class OverReactPlugin extends SemverAuditPlugin {
       ) ?? false;
     if (isNotGenerated) return false;
 
-    let parentClass = node.getAncestorOfType<ClassGrammar>('class') ?? node.getAncestorOfType<ClassGrammar>('enum');
-    if (parentClass == null) throw Error('Unable to retrieve class for field');
+    let parentClass =
+      node.getAncestorOfType<ClassGrammar>("class") ??
+      node.getAncestorOfType<ClassGrammar>("enum");
+    if (parentClass == null) throw Error("Unable to retrieve class for field");
 
-    return parentClass.target!.extends.includes('UiProps');
+    return parentClass.target!.extends.includes("UiProps");
   }
 }
