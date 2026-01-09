@@ -1,0 +1,18 @@
+name: Semgrep Cron
+
+on:
+  schedule:
+    # Weekly, randomly staggered by batch.yaml
+    - cron: '10 21 * * 4'
+
+permissions:
+  contents: read # Required for actions/checkout
+  actions: read # Allow upload-sarif to get the action run status
+  security-events: write # Allow upload-sarif to upload the SARIF file
+
+jobs:
+  semgrep:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: Workiva/gha-security-scanner@master
