@@ -12,14 +12,14 @@ permissions:
 
 jobs:
   publish-pub:
-    uses: Workiva/gha-dart-oss/.github/workflows/publish.yaml@v0.1.13
+    uses: Workiva/gha-dart-oss/.github/workflows/publish.yaml@v0.1.14
     with:
       package-path: ./indexers/dart
 
   publish-npm:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - uses: oven-sh/setup-bun@v2
         with:
