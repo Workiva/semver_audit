@@ -1,0 +1,50 @@
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+  id-token: write
+  pull-requests: write
+
+jobs:
+  checks:
+    name: 🔎 checks
+    uses: Workiva/gha-dart-oss/.github/workflows/checks.yaml@v0.1.14
+    with:
+      package-path: ./indexers/dart
+
+  test-unit:
+    name: 🧪 unit tests
+    uses: Workiva/gha-dart-oss/.github/workflows/test-unit.yaml@v0.1.14
+    with:
+      package-path: ./indexers/dart
+
+  test-functional:
+    name: 🧪 functional tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: 2.19.6
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install
+
+      - run: ./test/functional/dart/run.sh
+      - name: Check for gold changes
+        run: |
+          git diff --quiet -- ./test/functional/dart || {
+            echo "::error:: failed the gold file check"
+            echo "::error:: Run './test/functional/dart/run.sh' to regenerate these golds"
+            echo ""
+            git --no-pager diff \
+              --src-prefix="gold/" \
+              --dst-prefix="generated/" \
+              -- ./test/functional/dart
+            exit 1
+          }

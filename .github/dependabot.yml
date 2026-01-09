@@ -1,0 +1,40 @@
+version: 2
+
+updates:
+  - package-ecosystem: github-actions
+    directories:
+      - /
+      - .github/actions/setup-bun
+    schedule:
+      interval: weekly
+    groups:
+      gha:
+        patterns: ["*"]
+
+  - package-ecosystem: bun
+    directories:
+      - /
+      - ./indexers/typescript
+    schedule:
+      interval: weekly
+    groups:
+      ts:
+        patterns: ["*"]
+
+  - package-ecosystem: pub
+    directories:
+      - ./indexers/dart
+    schedule:
+      interval: weekly
+    groups:
+      dart:
+        patterns: ["*"]
+
+  - package-ecosystem: gomod
+    directories:
+      - ./indexers/go/semver_audit_go
+    schedule:
+      interval: weekly
+    groups:
+      go:
+        patterns: ["*"]

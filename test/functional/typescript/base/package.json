@@ -1,0 +1,6 @@
+{
+    "name": "functional_test",
+    "devDependencies": {
+        "typescript": "^5.8.3"
+    }
+}

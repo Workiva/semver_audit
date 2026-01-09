@@ -1,0 +1,10 @@
+.DS_Store
+dist
+node_modules
+semver-audit-*.tgz
+
+.dart_tool
+pubspec.lock
+
+reports/
+test/functional/**/report.json

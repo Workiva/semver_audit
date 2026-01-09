@@ -1,0 +1,10 @@
+*.swp
+*~
+.idea
+.vscode
+node_modules/
+package-lock.json
+vendor/
+semver_audit_go
+*/**/debug.test
+.DS_Store
