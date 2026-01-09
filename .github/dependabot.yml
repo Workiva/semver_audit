@@ -1,0 +1,13 @@
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: thursday 
+      time: '17:17'
+      timezone: America/Chicago
+    groups:
+      gha-dependencies:
+        patterns:
+          - workiva/gha-*
