@@ -2,9 +2,7 @@ version: 2
 
 updates:
   - package-ecosystem: github-actions
-    directories:
-      - /
-      - .github/actions/setup-bun
+    directory: /
     schedule:
       interval: weekly
     groups:
@@ -22,8 +20,7 @@ updates:
         patterns: ["*"]
 
   - package-ecosystem: pub
-    directories:
-      - ./indexers/dart
+    directory: ./indexers/dart
     schedule:
       interval: weekly
     groups:
@@ -31,8 +28,7 @@ updates:
         patterns: ["*"]
 
   - package-ecosystem: gomod
-    directories:
-      - ./indexers/go/semver_audit_go
+    directory: ./indexers/go/semver_audit_go
     schedule:
       interval: weekly
     groups:

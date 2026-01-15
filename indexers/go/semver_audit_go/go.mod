@@ -1,4 +1,4 @@
-module github.com/Workiva/semver-audit/indexers/go/semver_audit_go
+module github.com/Workiva/semver_audit/indexers/go/semver_audit_go
 
 go 1.18
 

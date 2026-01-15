@@ -50,7 +50,7 @@ export default class OverReactPlugin extends SemverAuditPlugin {
       if (removedAnnotations.includes("@requiredProp")) {
         return [
           Semver.major(
-            `Migrating from '@requiredProps' to 'late' is a major in many cases. See https://github.com/Workiva/semver-audit/wiki/Migrating-over_react-props-from-@requiredProp-to-late`,
+            `Migrating from '@requiredProps' to 'late' is a major in many cases. See https://github.com/Workiva/semver_audit/wiki/Migrating-over_react-props-from-@requiredProp-to-late`,
           ),
         ];
       } else {
