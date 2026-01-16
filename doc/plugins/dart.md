@@ -602,7 +602,7 @@ These are not going to be implemented in the MVP of semver-audit, but will be co
 
 * Changing a type to a less specific type, in certain cases is a ![minor]
 
-  * "Specificity" is determined by both inheritance and nullability (where nullable is a more generic form of the type). [This comment](https://github.com/Workiva/semver-audit/pull/27#discussion_r1807116245) has additional nuance on this 
+  * "Specificity" is determined by both inheritance and nullability (where nullable is a more generic form of the type). [This comment](https://github.com/Workiva/semver_audit/pull/27#discussion_r1807116245) has additional nuance on this 
 
   * This would require dart analysis to know the inherited members, as well as a better way of determining type nullability instead of just looking for a `?` operator
 

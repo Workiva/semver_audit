@@ -3,7 +3,7 @@ package collector
 import (
 	"testing"
 
-	"github.com/Workiva/semver-audit/indexers/go/semver_audit_go/payloads"
+	"github.com/Workiva/semver_audit/indexers/go/semver_audit_go/payloads"
 	"github.com/stretchr/testify/assert"
 )
 

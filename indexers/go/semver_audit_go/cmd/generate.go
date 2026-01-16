@@ -6,8 +6,8 @@ import (
 	"runtime/debug"
 	"strings"
 
-	"github.com/Workiva/semver-audit/indexers/go/semver_audit_go/collector"
-	"github.com/Workiva/semver-audit/indexers/go/semver_audit_go/payloads"
+	"github.com/Workiva/semver_audit/indexers/go/semver_audit_go/collector"
+	"github.com/Workiva/semver_audit/indexers/go/semver_audit_go/payloads"
 	"github.com/spf13/cobra"
 )
 
