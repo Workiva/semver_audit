@@ -33,14 +33,14 @@ jobs:
       - id: analyze
         run: |
           if [[ '${{ inputs.package }}' == 'core' ]]; then
-            path = './'
-            file = 'package.json'
-          else if [[ '${{ inputs.package }}' == 'dart-indexer' ]]; then
-            path = './indexers/dart'
-            file = 'pubspec.yaml'
-          else if [[ '${{ inputs.package }}' == 'typescript-indexer' ]]; then
-            path = './indexers/typescript'
-            file = 'package.json'
+            path='./'
+            file='package.json'
+          elif [[ '${{ inputs.package }}' == 'dart-indexer' ]]; then
+            path='./indexers/dart'
+            file='pubspec.yaml'
+          elif [[ '${{ inputs.package }}' == 'typescript-indexer' ]]; then
+            path='./indexers/typescript'
+            file='package.json'
           fi
 
           echo "path=$path" >> $GITHUB_OUTPUT
