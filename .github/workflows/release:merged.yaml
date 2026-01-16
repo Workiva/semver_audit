@@ -1,0 +1,81 @@
+name: "Release: Merged"
+
+on:
+  pull_request:
+    types: [closed]
+
+permissions:
+  contents: write
+  id-token: write
+  pull-requests: write
+
+jobs:
+  create-release:
+    if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'release/')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Parse release branch
+        id: parse
+        run: |
+          BRANCH="${{ github.event.pull_request.head.ref }}"
+
+          PACKAGE=$(echo "$BRANCH" | jq -Rsr 'split("/") | .[1]')
+          VERSION=$(echo "$BRANCH" | jq -Rsr 'split("/") | .[2]')
+          TAG_NAME="$PACKAGE $VERSION"
+          
+          echo "package=$PACKAGE" >> $GITHUB_OUTPUT
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "tag-name=$TAG_NAME" >> $GITHUB_OUTPUT
+
+      - name: Determine changelog path
+        id: changelog
+        env:
+          PACKAGE: ${{ steps.parse.outputs.package }}
+        run: |
+          if [[ "$PACKAGE" == "semver-audit" ]]; then
+            CHANGELOG_PATH="./CHANGELOG.md"
+          else if [[ "$PACKAGE" == "semver-audit-typescript" ]]; then
+            CHANGELOG_PATH="./indexers/typescript/CHANGELOG.md"
+          else if [[ "$PACKAGE" == "semver_audit_dart" ]]; then
+            CHANGELOG_PATH="./indexers/dart/CHANGELOG.md"
+          fi
+          
+          echo "path=$CHANGELOG_PATH" >> $GITHUB_OUTPUT
+
+      - name: Extract changelog for version
+        id: extract
+        env:
+          VERSION: ${{ steps.parse.outputs.version }}
+          CHANGELOG_PATH: ${{ steps.changelog.outputs.path }}
+        run: |
+          # Extract content between ## $VERSION and the next ## heading (or end of file)
+          # Using awk to capture the section
+          CONTENT=$(awk -v ver="$VERSION" '
+            /^## / {
+              if (found) exit
+              if ($0 ~ "^## " ver) found=1
+              next
+            }
+            found { print }
+          ' "$CHANGELOG_PATH")
+          
+          # Write to file to preserve newlines
+          echo "$CONTENT" > release_notes.md
+          
+          # If no content found, use a default message
+          if [ -z "$CONTENT" ]; then
+            echo "Release $VERSION" > release_notes.md
+          fi
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG_NAME="${{ steps.parse.outputs.tag_name }}"
+          
+          gh release create "$TAG_NAME" \
+            --title "$TAG_NAME" \
+            --notes-file release_notes.md
+

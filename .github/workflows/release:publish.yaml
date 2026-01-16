@@ -1,0 +1,51 @@
+name: Publish
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+  id-token: write
+  pull-requests: write
+
+jobs:
+  publish-core:
+    if: startsWith(github.event.release.tag_name, 'semver-audit')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - run: |
+          bun install
+          bun run build
+          bun publish
+
+  publish-typescript:
+    if: startsWith(github.event.release.tag_name, 'semver-audit-typescript')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - working-directory: ./indexers/typescript
+        run: |
+          bun install
+          bun run build
+          bun publish
+
+  publish-dart:
+    if: startsWith(github.event.release.tag_name, 'semver_audit_dart')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: 2.19.6
+      - working-directory: ./indexers/dart
+        run: |
+          dart pub get
+          dart publish --force
