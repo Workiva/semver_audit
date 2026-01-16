@@ -20,8 +20,7 @@ on:
           - patch
 
 permissions:
-  contents: read
-  id-token: write
+  contents: write
   pull-requests: write
 
 jobs:
