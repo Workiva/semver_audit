@@ -20,9 +20,9 @@
     "typescript": "^5.9.3"
   },
   "devDependencies": {
-    "@types/node": "^25.0.3",
-    "prettier": "^3.7.4",
-    "vitest": "^4.0.16",
+    "@types/node": "^25.0.9",
+    "prettier": "^3.8.0",
+    "vitest": "^4.0.17",
     "@types/bun": "latest"
   }
 }
