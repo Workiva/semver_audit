@@ -1,0 +1,68 @@
+name: 🚀 Create Release PR
+run-name: "Create Release PR: ${{ inputs.package }} ${{ inputs.semver }}"
+
+on:
+  workflow_dispatch:
+    inputs:
+      package:
+        type: choice
+        description: The package to release
+        options:
+          - core
+          - dart-indexer
+          - typescript-indexer
+      semver:
+        type: choice
+        description: The semver that this change is
+        options:
+          - major
+          - minor
+          - patch
+
+permissions:
+  contents: read
+  id-token: write
+  pull-requests: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - id: analyze
+        run: |
+          if [[ '${{ inputs.package }}' == 'core' ]];
+            path = './'
+            file = 'package.json'
+          else if [[ '${{ inputs.package }}' == 'dart-indexer' ]];
+            path = './indexers/dart'
+            file = 'pubspec.yaml'
+          else if [[ '${{ inputs.package }}' == 'typescript-indexer' ]];
+            path = './indexers/typescript'
+            file = 'package.json'
+          fi
+
+          echo "path=$path" >> $GITHUB_OUTPUT
+          echo "file=$file" >> $GITHUB_OUTPUT
+
+      - name: Update Version
+        working-directory: ${{ steps.analyze.outputs.path }}
+        id: update-version
+        run: |
+          CURRENT=$(yq -r '.version' ${{ steps.analyze.outputs.file }})
+          NEXT=$(npx semver "$CURRENT" -i "${{ inputs.semver }}")
+          yq '.version = env(NEXT)' ${{ steps.analyze.outputs.file }}
+
+          echo "next-version=$NEXT" >> $GITHUB_OUTPUT
+
+      - name: Update Changelog Header
+        working-directory: ${{ steps.analyze.outputs.path }}
+        env:
+          version: ${{ steps.update-version.outputs.next-version }}
+        run: |
+          sed -i "s/## Unreleased/## Unreleased\n\n\n## $version/" CHANGELOG.md
+
+      - uses: peter-evans/create-pull-request@v8
+        with:
+          branch: release/${{ inputs.package }}/${{ steps.update-version.outputs.next-version }}

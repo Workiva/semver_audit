@@ -1,6 +1,6 @@
 {
   "name": "@workiva/semver-audit",
-  "version": "2.4.123",
+  "version": "1.0.0",
   "description": "diffs semver audit index files and provides the aggregate summary of the results in the form of a suggested semver label",
   "license": "Apache-2.0",
   "bin": {

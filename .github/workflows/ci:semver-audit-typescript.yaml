@@ -1,5 +1,12 @@
 on:
-  workflow_call:
+  pull_request:
+    paths:
+      - ./indexers/typescript/**
+  push:
+    branches:
+      - "master"
+    tags:
+      - "**"
 
 permissions:
   contents: read
