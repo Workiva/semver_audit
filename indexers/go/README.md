@@ -5,7 +5,7 @@ A semver-audit indexer for go. This tool can generate semantic versioning inform
 ## Installation
 
 ```console
-go install github.com/Workiva/semver-audit/indexers/go/semver_audit_go
+go install github.com/Workiva/semver_audit/indexers/go/semver_audit_go
 ```
 
 ## Usage

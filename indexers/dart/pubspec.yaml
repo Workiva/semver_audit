@@ -1,7 +1,7 @@
 name: semver_audit
 version: 2.4.123
 description: Tool for generating and reporting a representation of a Dart package's public API.
-homepage: https://github.com/Workiva/semver-audit
+homepage: https://github.com/Workiva/semver_audit
 
 environment:
   sdk: ">=2.19.6 <4.0.0"

@@ -5,7 +5,7 @@ import (
 	"go/token"
 	"os"
 
-	"github.com/Workiva/semver-audit/indexers/go/semver_audit_go/payloads"
+	"github.com/Workiva/semver_audit/indexers/go/semver_audit_go/payloads"
 )
 
 // CollectFromPath returns a map from export keys to the corresponding
