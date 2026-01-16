@@ -52,7 +52,7 @@ jobs:
         run: |
           CURRENT=$(yq -r '.version' ${{ steps.analyze.outputs.file }})
           NEXT=$(npx semver "$CURRENT" -i "${{ inputs.semver }}")
-          yq '.version = $next' --arg next "$NEXT" ${{ steps.analyze.outputs.file }}
+          yq eval '.version = $next' --arg next "$NEXT" ${{ steps.analyze.outputs.file }}
 
           echo "next-version=$NEXT" >> $GITHUB_OUTPUT
 
