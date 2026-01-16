@@ -1,6 +1,6 @@
 {
   "name": "@workiva/semver-audit-typescript",
-  "version": "2.4.123",
+  "version": "1.0.0",
   "description": "Outputs semver-audit reports for typescript packages",
   "license": "Apache-2.0",
   "bin": {
